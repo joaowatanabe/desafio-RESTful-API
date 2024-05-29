@@ -55,7 +55,7 @@ const logarUsuario = async (req, res) => {
 
     const { senha: _, ...usuarioLogado } = usuario.rows[0];
 
-    return res.json({ usuario: usuarioLogado, token });
+    return res.status(200).json({ usuario: usuarioLogado, token });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ mensagem: "Erro interno do servidor" });

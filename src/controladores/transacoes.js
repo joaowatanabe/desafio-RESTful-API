@@ -54,7 +54,7 @@ const cadastrarTransacao = async (req, res) => {
       .json({ mensagem: "Todos os campos são obrigatórios!" });
   }
 
-  if (tipo !== "entrada" && tipo !== "saida") {
+  if (tipo.toLowerCase() !== "entrada" && tipo.toLowerCase() !== "saida") {
     return res.status(404).json({
       mensagem: "Tipo definido é invalido, informar entrada ou saida!",
     });
@@ -112,6 +112,7 @@ const atualizarTransacao = async (req, res) => {
   const { id } = req.params;
   const idUsuario = req.usuario.id;
   const { descricao, valor, data, categoria_id, tipo } = req.body;
+
   if (!descricao || !valor || !data || !categoria_id || !tipo) {
     return res
       .status(404)
@@ -149,12 +150,12 @@ const excluirTransacao = async (req, res) => {
   const idUsuario = req.usuario.id;
 
   try {
-    const result = await pool.query(
+    const resultado = await pool.query(
       "delete from transacoes where id = $1 AND usuario_id = $2 RETURNING id",
       [id, idUsuario]
     );
 
-    if (result.rowCount === 0) {
+    if (resultado.rowCount === 0) {
       return res.status(404).json("Transação não encontrada ou já excluída.");
     }
 
